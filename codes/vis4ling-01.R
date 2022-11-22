@@ -115,6 +115,9 @@ p.scatter <- p.scatter + theme(plot.title = element_text(size = 11, face = "bold
 figure <- ggarrange(p.bar, p.hist, p.box, p.scatter, ncol=1, nrow=4)
 # 제목 설정
 title <- expression(atop(bold("언어학자를 위한 그림 선택 기준 v.0.1"), scriptstyle("만든 사람: 박수민(https://github.com/suparklingmin)")))
-annotate_figure(figure, top=text_grob(title, size=14, family="Source Han Sans KR", face="bold"))
+figure <- annotate_figure(figure, top=text_grob(title, size=14, family="Source Han Sans KR", face="bold"))
 
 # 그림 그리기 끝
+
+# 그림 저장하기
+ggsave(filename="vis4ling1.png", plot = figure)
