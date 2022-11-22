@@ -120,4 +120,4 @@ figure <- annotate_figure(figure, top=text_grob(title, size=14, family="Source H
 # 그림 그리기 끝
 
 # 그림 저장하기
-ggsave(filename="vis4ling1.png", plot = figure)
+ggsave(plot=figure, filename="vis4ling1.png", width=4, height=12)
