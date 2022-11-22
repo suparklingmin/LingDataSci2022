@@ -32,7 +32,7 @@ x.gender <- factor(sample(genders, N, replace=TRUE, prob=c(4.5,4.5,1)))
 x.age <- factor(sample(ages, N, replace=TRUE, prob=c(6,4)))
 
 ## 각 변수의 값들을 하나의 데이터프레임으로 묶어 준다.
-data.all <- data.frame(age=x.age, gender=x.gender, f0=y.f0)
+data.all <- data.frame(age=x.age, gender=x.gender)
 
 ## 반응변수: F0 값을 각 성별에서 보고된 확률분포에서 추출한다.
 ## 여성-남성-논바이너리 순서로 F0 값을 추출하기 위해 데이터프레임을 정렬해 준다.
