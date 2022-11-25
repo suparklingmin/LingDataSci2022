@@ -36,7 +36,7 @@ data.all <- data.frame(age=x.age, gender=x.gender)
 
 ## 반응변수: F0 값을 각 성별에서 보고된 확률분포에서 추출한다.
 ## 여성-남성-논바이너리 순서로 F0 값을 추출하기 위해 데이터프레임을 정렬해 준다.
-data.all <- data.all[order(data.all$gender), ]
+data.all <- data.all[order(data.all$gender, data.all$age), ]
 gender.count <- table(data.all$gender)
 ## 성별 F0값 평균, 표준편차 출처: https://www.researchgate.net/figure/Means-and-standard-deviations-for-average-F0-in-Hz_tbl2_345025992
 gender.mean <- c(198.5, 119.2, 144.3)
@@ -62,7 +62,7 @@ row.names(data.all) <- factor(paste0("S", formatC(1:N, width=3, flag="0")))
 # 그림 그리기 시작
 
 # 전체 설정: 글꼴과 글자 크기 정하기
-theme_set(theme_grey(base_family='Source Han Sans KR', base_size=10))
+theme_set(theme_grey(base_family='Source Han Sans K', base_size=9))
 
 # 1. 막대그래프: 실험참여자의 성별/연령별 분포
 max.count <- max(table(data.all[c('age', 'gender')]))
@@ -70,7 +70,7 @@ p.bar <- ggplot(data.all, aes(x=age, fill=gender))
 p.bar <- p.bar + geom_bar(position="dodge", color="black")
 p.bar <- p.bar + scale_y_continuous(breaks=10*c(0:ceiling(max.count/10)))
 p.bar <- p.bar + ggtitle("1. 막대그래프: x=범주형, y=개수 \n [예시] 연령대별·성별 실험참여자 수")
-p.bar <- p.bar + theme(plot.title = element_text(size = 11, face = "bold"))
+p.bar <- p.bar + theme(plot.title=element_text(size=10, face="bold"))
 
 # 2. 히스토그램: 설명변수를 고려하지 않은 F0 값의 분포
 f0.breaks <- 50*c(floor(min(data.all$f0)/50):ceiling(max(data.all$f0)/50))
@@ -79,14 +79,14 @@ p.hist <- p.hist + geom_histogram(binwidth=10, color="black", fill="#E69F00")
 p.hist <- p.hist + scale_x_continuous(breaks=f0.breaks)
 p.hist <- p.hist + ggtitle("2. 히스토그램: x=수치형, y=개수 \n [예시] 기본주파수(F0) 분포 \n [주의] x의 평균과 표준편차만 제시하는 것은 부족함!")
 p.hist <- p.hist + xlab('F0 (Hz)')
-p.hist <- p.hist + theme(plot.title = element_text(size = 11, face = "bold"))
+p.hist <- p.hist + theme(plot.title=element_text(size=10, face="bold"))
 
 # 3. 상자수염그림: 연령별/성별에 따른 F0 값의 분포
 p.box <- ggplot(data.all, aes(x=age, y=f0, fill=gender))
 p.box <- p.box + geom_boxplot()
 p.box <- p.box + ggtitle("3. 상자수염그림: x=범주형, y=연속형 \n[예시] 연령대별·성별 F0 분포 \n[주의] 막대그래프 안 됨!")
 p.box <- p.box + ylab('F0 (Hz)')
-p.box <- p.box + theme(plot.title = element_text(size = 11, face = "bold"))
+p.box <- p.box + theme(plot.title=element_text(size=10, face="bold"))
 
 # 데이터 추가: 여성 화자의 F0 값들에 한하여 대응하는 VOT 값을 설정한다.
 # F0 값을 (1) 190 미만, (2) 190 이상 220 이하, (3) 220 초과 세 구간으로 분할하여
@@ -103,21 +103,21 @@ data.f$vot <- get.y(data.f$f0)
 vot.breaks <- 20*c(0:ceiling(max(data.f$vot)/20))
 f0f.breaks <- 20*c(floor(min(data.f$f0)/20):ceiling(max(data.f$f0)/20))
 p.scatter <- ggplot(data.f, aes(x=jitter(f0, amount=10), y=vot, color=gender))
-p.scatter <- p.scatter + geom_point(fill="white")
+p.scatter <- p.scatter + geom_point()
 p.scatter <- p.scatter + scale_y_continuous(breaks=vot.breaks)
 p.scatter <- p.scatter + scale_x_continuous(breaks=f0f.breaks)
 p.scatter <- p.scatter + ggtitle("4. 산점도: x=수치형, y=연속형 \n[예시] 여성 화자의 F0와 VOT의 분포")
 p.scatter <- p.scatter + xlab('F0 (Hz)')
 p.scatter <- p.scatter + ylab('VOT (millisecond)')
-p.scatter <- p.scatter + theme(plot.title = element_text(size = 11, face = "bold"))
+p.scatter <- p.scatter + theme(plot.title=element_text(size=10, face="bold"))
 
 # 종합: 네 개 그림을 한 화면에 모아서 그리기
 figure <- ggarrange(p.bar, p.hist, p.box, p.scatter, ncol=1, nrow=4)
 # 제목 설정
 title <- expression(atop(bold("언어학자를 위한 그림 선택 기준 v.0.1"), scriptstyle("만든 사람: 박수민(https://github.com/suparklingmin)")))
-figure <- annotate_figure(figure, top=text_grob(title, size=14, family="Source Han Sans KR", face="bold"))
-
+figure <- annotate_figure(figure, top=text_grob(title, size=12, family="Source Han Sans K", face="bold"))
+figure
 # 그림 그리기 끝
 
 # 그림 저장하기
-ggsave(plot=figure, filename="vis4ling1.png", width=4, height=12)
+ggsave(plot=figure, filename="vis4ling1.png", width=3.5, height=10.5)
