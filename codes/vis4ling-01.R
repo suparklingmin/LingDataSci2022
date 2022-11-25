@@ -84,10 +84,11 @@ p.hist <- p.hist + labs(title="2. 히스토그램: x=수치형, y=개수",
 p.hist <- p.hist + theme(plot.title=element_text(size=10, face="bold"), plot.background=element_rect(fill="transparent", color=NA))
 
 # 3. 상자수염그림: 연령별/성별에 따른 F0 값의 분포
-p.box <- ggplot(data.all, aes(x=age, y=f0, fill=gender))
+p.box <- ggplot(data.all, aes(x=gender, y=f0, fill=gender))
 p.box <- p.box + geom_boxplot()
+p.box <- p.box + guides(fill=FALSE)
 p.box <- p.box + labs(title="3. 상자수염그림: x=범주형, y=연속형",
-                      subtitle="[예시] 연령대별·성별 F0 분포 \n[주의] 막대그래프 안 됨!",
+                      subtitle="[예시] 성별 F0 분포 \n[주의] 막대그래프 안 됨!",
                       y="F0 (Hz)")
 p.box <- p.box + theme(plot.title=element_text(size=10, face="bold"), plot.background=element_rect(fill="transparent", color=NA))
 
@@ -118,7 +119,7 @@ p.scatter <- p.scatter + theme(plot.title=element_text(size=10, face="bold"), pl
 # 종합: 네 개 그림을 한 화면에 모아서 그리기
 figure <- ggarrange(p.bar, p.hist, p.box, p.scatter, ncol=1, nrow=4)
 # 제목 설정
-title <- expression(atop(bold("언어학자를 위한 그림 선택 기준 v.0.1"), scriptstyle("만든 사람: 박수민(https://github.com/suparklingmin)")))
+title <- expression(atop(bold("언어학자를 위한 그림 선택 기준 (1) v.0.2"), scriptstyle("만든 사람: 박수민(https://github.com/suparklingmin)")))
 figure <- annotate_figure(figure, top=text_grob(title, size=12, family="Source Han Sans K", face="bold"))
 figure
 # 그림 그리기 끝
